@@ -1,0 +1,7 @@
+PreCommit:
+  Credo:
+    enabled: true
+    command: ['mix', 'credo', '--strict']
+    problem_on_unmodified_line: warn
+    exclude:
+      - '.credo.exs'
