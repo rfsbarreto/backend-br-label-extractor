@@ -4,7 +4,6 @@ defmodule BackendVagas.Processors.LabelsExtractor do
   """
 
   def run do
-    
   end
 
 end
