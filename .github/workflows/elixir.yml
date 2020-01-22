@@ -18,6 +18,6 @@ jobs:
         mix local.hex --force
         mix deps.get
     - name: Run lint
-      run: mix credo --strict
+      run: mix credo -a 
     - name: Run Tests
       run: mix test
