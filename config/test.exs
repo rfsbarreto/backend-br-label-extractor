@@ -2,11 +2,15 @@ use Mix.Config
 
 # Configure your database
 config :backend_vagas, BackendVagas.Repo,
-  username: System.get_env("POSTGRES_USER"),
-  password: System.get_env("POSTGRES_PSWD"),
-  database: System.get_env("POSTGRES_DATABASE"),
+  database: 'backend_vagas_dev',
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+if System.get_env("GITHUB_ACTIONS") do
+  config :backend_vagas, BackendVagas.Repo,
+    username: 'postgres',
+    password: 'postgres'
+end
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.

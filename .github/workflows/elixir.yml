@@ -3,34 +3,35 @@ name: Elixir CI
 on: push
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
-    container:
-      image: elixir:1.9.1-slim
-    
     services:
-      db: 
+      postgres:
         image: postgres:11
-        ports: ['5432:5432']
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: postgres
         options: >-
-          - health-cmd pg_isready
-          - health-interval 10s
-          - health-timeout 5s
-          - health-retries 5
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1.0.0
+        with:
+          otp-version: 22.x
+          elixir-version: 1.9.x
       - name: Install Dependencies
-        run: |
-          mix local.rebar --force
-          mix local.hex --force
-          mix deps.get
+        run: mix do local.hex --force, local.rebar --force, deps.get
+      - name: Compile code
+        run: mix compile
       - name: Run lint
-        run: mix credo -a 
+        run: mix credo -a
+      - name: Run code formatting
+        run: mix format --check-formatted
       - name: Run Tests
         run: mix test
-        env:
-          POSTGRES_USER: 'postgres'
-          POSTGRES_PSWD: 'postgres'
-          POSTGRES_DATABASE: 'backend_vagas_dev'
