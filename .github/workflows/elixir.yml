@@ -35,3 +35,5 @@ jobs:
         run: mix format --check-formatted
       - name: Run Tests
         run: mix test
+        env:
+          POSTGRES_DATABASE: 'backend_vagas_ci'

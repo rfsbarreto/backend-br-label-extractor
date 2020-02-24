@@ -2,7 +2,9 @@ use Mix.Config
 
 # Configure your database
 config :backend_vagas, BackendVagas.Repo,
-  database: 'backend_vagas_dev',
+  username: System.get_env("POSTGRES_USER"),
+  password: System.get_env("POSTGRES_PSWD"),
+  database: System.get_env("POSTGRES_DATABASE"),
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
