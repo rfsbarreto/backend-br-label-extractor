@@ -2,9 +2,9 @@ use Mix.Config
 
 # Configure your database
 config :backend_vagas, BackendVagas.Repo,
-  username: System.get_env("POSTGRES_USER"),
-  password: System.get_env("POSTGRES_PSWD"),
-  database: System.get_env("POSTGRES_DATABASE"),
+  username: "postgres",
+  password: "postgres",
+  database: "backend_vagas_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
