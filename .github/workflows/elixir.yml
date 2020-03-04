@@ -1,0 +1,37 @@
+name: Elixir CI
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:11
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1.0.0
+        with:
+          otp-version: 22.x
+          elixir-version: 1.9.x
+      - name: Install Dependencies
+        run: mix do local.hex --force, local.rebar --force, deps.get
+      - name: Compile code
+        run: mix compile
+      - name: Run lint
+        run: mix credo -a
+      - name: Run code formatting
+        run: mix format --check-formatted
+      - name: Run Tests
+        run: mix test
